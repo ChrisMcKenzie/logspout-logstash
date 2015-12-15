@@ -3,6 +3,7 @@ package logstash
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"log"
 	"net"
 
@@ -48,6 +49,7 @@ func (a *LogstashAdapter) Stream(logstream chan *router.Message) {
 			Hostname: m.Container.Config.Hostname,
 		}
 
+		fmt.Println(m.Container.Node)
 		// if running through swarm
 		if m.Container.Node != nil {
 			msg.Swarm = true
