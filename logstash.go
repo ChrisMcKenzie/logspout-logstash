@@ -3,7 +3,6 @@ package logstash
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"log"
 	"net"
 
@@ -49,14 +48,6 @@ func (a *LogstashAdapter) Stream(logstream chan *router.Message) {
 			Hostname: m.Container.Config.Hostname,
 		}
 
-		fmt.Println(m.Container.Node)
-		// if running through swarm
-		if m.Container.Node != nil {
-			msg.Swarm = true
-			msg.Node = m.Container.Node.Name
-			msg.IP = m.Container.Node.IP
-		}
-
 		js, err := json.Marshal(msg)
 		if err != nil {
 			log.Println("logstash:", err)
@@ -77,7 +68,4 @@ type LogstashMessage struct {
 	ID       string `json:"docker_id"`
 	Image    string `json:"docker_image"`
 	Hostname string `json:"docker_hostname"`
-	Node     string `json:"docker_node"`
-	IP       string `json:"ip_address"`
-	Swarm    bool   `json:"swarm"`
 }
