@@ -40,6 +40,9 @@ func NewLogstashAdapter(route *router.Route) (router.LogAdapter, error) {
 // Stream implements the router.LogAdapter interface.
 func (a *LogstashAdapter) Stream(logstream chan *router.Message) {
 	for m := range logstream {
+		if m == nil {
+			continue
+		}
 		msg := LogstashMessage{
 			Message:  m.Data,
 			Name:     m.Container.Name,
